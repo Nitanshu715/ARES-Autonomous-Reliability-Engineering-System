@@ -1,7 +1,5 @@
 <div align="center">
 
-  <img src="ARES-Logo.PNG" alt="ARES Logo" width="400" />
-
   <h1 style="margin: 10px 0 0 0; font-weight:700; letter-spacing:1px;">
     ARES
   </h1>
@@ -15,6 +13,10 @@
       AI-Driven Detection • Self-Healing Infrastructure • Production-Grade DevOps
     </strong>
   </p>
+  
+  <img src="ARES-Logo.PNG" alt="ARES Logo" width="400" />
+
+
 
 </div>
 
