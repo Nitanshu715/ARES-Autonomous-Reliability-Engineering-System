@@ -1,14 +1,13 @@
-
-<div align="center">
-
-<img src="ARES-Logo.PNG" width="500"/>
-
 <h1 style="margin-bottom:0;">ARES</h1>
 <h3 style="margin-top:0;">Autonomous Reliability Engineering System</h3>
 
 <p>
   <strong>AI‑Driven Detection • Self‑Healing Infrastructure • Production‑Grade DevOps</strong>
 </p>
+
+<div align="center">
+
+<img src="ARES-Logo.PNG" width="500"/>
 
 </div>
 
