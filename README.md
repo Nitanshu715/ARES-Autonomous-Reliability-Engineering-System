@@ -1,194 +1,168 @@
 
 <div align="center">
 
-<img src="ARES-Logo.PNG" width="200"/>
+<img src="ARES-Logo.PNG" width="180"/>
 
-# ARES — Autonomous Reliability Engineering System
+<h1 style="margin-bottom:0;">ARES</h1>
+<h3 style="margin-top:0;">Autonomous Reliability Engineering System</h3>
 
-### Autonomous Cloud Reliability Platform  
-AI‑Driven Detection • Self‑Healing Infrastructure • Production‑Grade DevOps
+<p>
+  <strong>AI‑Driven Detection • Self‑Healing Infrastructure • Production‑Grade DevOps</strong>
+</p>
 
 </div>
 
 ---
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Architecture-Microservices-black?style=for-the-badge"/>
-  <img src="https://img.shields.io/badge/Cloud-AWS-black?style=for-the-badge"/>
-  <img src="https://img.shields.io/badge/ML-Anomaly%20Detection-black?style=for-the-badge"/>
-  <img src="https://img.shields.io/badge/CI/CD-Automated-black?style=for-the-badge"/>
-  <img src="https://img.shields.io/badge/Reliability-Self%20Healing-black?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/Platform-Cloud--Native-2F80ED?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/Architecture-Microservices-27AE60?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/Reliability-Autonomous-E63946?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/ML-Anomaly%20Detection-F4A261?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/CI/CD-Fully%20Automated-6A4C93?style=for-the-badge"/>
 </p>
 
 ---
 
-## 1. Executive Overview
+## System Overview
 
-ARES (Autonomous Reliability Engineering System) is a **cloud‑native autonomous infrastructure platform** that continuously monitors, analyzes, predicts, and heals failures in distributed microservices systems without human intervention.
+ARES is an **autonomous reliability platform** engineered to monitor, predict, and recover distributed microservices systems without human intervention.  
+It merges **DevOps automation**, **observability**, and **machine learning** to convert infrastructure into a **self‑managing control system**.
 
-ARES bridges DevOps, Site Reliability Engineering, and Artificial Intelligence to move infrastructure from:
-
+Traditional Model:
 ```
-Reactive Monitoring → Manual Recovery
-```
-
-to
-
-```
-Autonomous Detection → Intelligent Decision → Automated Healing
+Monitoring → Alert → Manual Recovery
 ```
 
-This project demonstrates a next‑generation reliability paradigm built for real‑world distributed systems.
+ARES Model:
+```
+Telemetry → ML Analysis → Decision Engine → Automated Healing
+```
 
 ---
 
-## 2. System Philosophy
+## Architectural Model
 
-Distributed systems fail due to scale, complexity, and unpredictability. ARES treats failure as a constant and introduces a control system capable of:
-
-- Continuous telemetry collection  
-- ML‑driven anomaly recognition  
-- Autonomous remediation  
-- System stabilization  
-
-The platform follows the **Autonomic Computing MAPE‑K loop** adapted for cloud reliability.
-
----
-
-## 3. Architecture Overview
-
-ARES is designed across two independent planes.
+ARES operates across two independent planes.
 
 ### Application Data Plane
+The live SaaS microservices application.
 
-The production‑style SaaS microservices system being managed.
+| Layer | Components |
+|------|------------|
+| Frontend | Next.js UI |
+| Services | User • Product • Cart • Order |
+| Networking | API Gateway • Reverse Proxy |
+| Data | PostgreSQL • Redis |
+| Runtime | Docker Containers |
 
-- Next.js frontend  
-- RESTful backend services  
-- Dockerized microservices  
-- PostgreSQL and Redis data layers  
-- Reverse proxy and API gateway  
+### Control Plane — ARES Core
+The reliability intelligence system.
 
-### Control Plane (ARES Core)
-
-The intelligence and automation layer.
-
-- Monitoring Agents  
-- Log Analysis Agents  
-- Health Verification Agents  
-- ML Detection Engine  
-- Healing Engine  
-- Observability Stack  
-
----
-
-## 4. Microservices Architecture
-
-Each service is containerized and independently deployable.
-
-```
-User Service     → Authentication
-Product Service  → Catalog
-Cart Service     → Cart operations
-Order Service    → Checkout & processing
-API Gateway      → Traffic routing
-```
-
-Isolation allows fault containment and targeted healing actions.
+| Module | Role |
+|-------|------|
+| Monitoring Agents | Metric collection |
+| Log Agents | Log ingestion & parsing |
+| Health Agents | Service heartbeat checks |
+| ML Engine | Anomaly detection |
+| Healing Engine | Automated remediation |
+| Observability Stack | Metrics & visualization |
 
 ---
 
-## 5. Observability Stack
+## Observability Stack
 
-ARES continuously gathers system telemetry:
+ARES maintains continuous telemetry streams.
 
-| Metric Type | Purpose |
-|-------------|---------|
-| CPU Utilization | Load analysis |
-| Memory Usage | Leak detection |
-| API Latency | Performance degradation |
+| Metric | Purpose |
+|--------|---------|
+| CPU | Load trend analysis |
+| Memory | Leak & pressure detection |
+| Latency | Performance degradation |
 | Error Rate | Failure signals |
-| Service Health | Uptime tracking |
+| Health | Service uptime |
 
-Tools used: Prometheus, Grafana, ELK/Loki.
+**Tools:** Prometheus • Grafana • ELK / Loki
 
 ---
 
-## 6. Machine Learning Engine
+## Machine Learning Layer
 
-ARES integrates unsupervised anomaly detection models:
+ARES uses **unsupervised anomaly detection**.
 
-- Isolation Forest  
-- Statistical threshold modeling  
+| Model | Function |
+|------|----------|
+| Isolation Forest | Outlier detection |
+| Statistical Model | Baseline deviation |
 
 Features analyzed:
 
-- CPU trends  
+- CPU usage trends  
 - Memory growth patterns  
-- Latency distribution  
-- Error frequency  
+- Latency distributions  
+- Error frequencies  
 
-Model output generates risk scores that trigger automated decisions.
+Model output feeds the decision engine for automated action.
 
 ---
 
-## 7. Autonomous Agent Framework
+## Autonomous Agent Framework
 
-| Agent | Function |
-|------|----------|
+| Agent | Responsibility |
+|------|----------------|
 | Monitoring Agent | Metric ingestion |
 | Health Agent | Service heartbeat validation |
-| Log Agent | Log parsing and anomaly signals |
+| Log Agent | Log anomaly signals |
 | Healing Agent | Executes remediation |
-| Load Agent | Stress scenario simulation |
+| Load Agent | Traffic simulation |
 
-Agents operate continuously in the background as system operators.
+Agents operate continuously as background reliability operators.
 
 ---
 
-## 8. Self‑Healing Engine
+## Self‑Healing Engine
 
-ARES performs targeted remediation actions.
+ARES performs targeted automated remediation.
 
-| Failure Condition | Recovery Action |
-|-------------------|-----------------|
+| Failure Condition | Action |
+|-------------------|--------|
 | Container crash | Restart container |
 | CPU overload | Simulated scaling |
 | Memory anomaly | Service recycle |
-| API timeout | Service restart |
+| API timeout | Restart service |
 
-Healing commands are executed through Docker Engine APIs.
-
----
-
-## 9. CI/CD Pipeline
-
-```
-Source Push → Build Containers → Run Tests → Push Registry → Deploy Cloud
-```
-
-Ensures reproducible, automated production deployment.
+Healing commands executed via Docker Engine API.
 
 ---
 
-## 10. Reliability Testing Strategy
+## CI/CD Pipeline
 
-ARES validates system resilience via:
+```
+Source Push → Build Containers → Test Suite → Registry Push → Cloud Deployment
+```
+
+Ensures reproducible, automated deployment aligned with production DevOps standards.
+
+---
+
+## Reliability Testing
+
+ARES incorporates resilience validation through:
 
 - Load simulation  
 - Failure injection  
-- Resource exhaustion scenarios  
-- Service disruption tests  
+- Resource stress tests  
+- Service disruption experiments  
 
-This aligns with Chaos Engineering principles.
+Inspired by Chaos Engineering principles.
 
 ---
 
-## 11. Dashboard & Control Center
+## Dashboard
 
-Provides real‑time infrastructure visibility:
+ARES provides a control center displaying:
 
-- Service health status  
+- Service health overview  
 - Resource utilization graphs  
 - ML anomaly alerts  
 - Recovery timeline  
@@ -196,42 +170,40 @@ Provides real‑time infrastructure visibility:
 
 ---
 
-## 12. Technology Stack
+## Technology Stack
 
-Frontend: Next.js, React  
-Backend: Node.js, Python  
-Containers: Docker  
-Cloud: AWS EC2  
-CI/CD: GitHub Actions  
-Monitoring: Prometheus, Grafana  
-Logging: ELK / Loki  
-Machine Learning: Scikit‑learn  
-Database: PostgreSQL  
-Cache: Redis  
-
----
-
-## 13. Why ARES Matters
-
-ARES represents the transition from monitoring systems to autonomous reliability platforms, combining:
-
-- Distributed systems engineering  
-- DevOps automation  
-- Machine learning intelligence  
-- Self‑healing infrastructure  
+| Domain | Technology |
+|--------|-----------|
+| Frontend | Next.js, React |
+| Backend | Node.js, Python |
+| Containers | Docker |
+| Cloud | AWS EC2 |
+| CI/CD | GitHub Actions |
+| Monitoring | Prometheus |
+| Visualization | Grafana |
+| Logging | ELK / Loki |
+| ML | Scikit‑learn |
+| Database | PostgreSQL |
+| Cache | Redis |
 
 ---
 
-## 14. Future Expansion
+## System Impact
+
+ARES represents the evolution from **reactive monitoring systems** to **autonomous reliability platforms**, integrating distributed systems engineering, ML intelligence, and DevOps automation.
+
+---
+
+## Future Expansion
 
 - Kubernetes orchestration  
 - Predictive auto‑scaling  
-- Deep learning anomaly models  
-- Multi‑cloud deployment  
+- Advanced ML models  
+- Multi‑cloud deployments  
 
 ---
 
 ## License
 
-Academic Research and Innovation Project
+Academic Research & Innovation Project
 
