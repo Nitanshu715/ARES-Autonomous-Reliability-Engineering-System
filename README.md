@@ -1,7 +1,7 @@
 
 <div align="center">
 
-<img src="ARES-Logo.PNG" width="200"/>
+<img src="ARES-Logo.PNG" width="1000"/>
 
 <h1 style="margin-bottom:0;">ARES</h1>
 <h3 style="margin-top:0;">Autonomous Reliability Engineering System</h3>
