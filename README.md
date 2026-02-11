@@ -1,15 +1,23 @@
-<h1 style="margin-bottom:0;">ARES</h1>
-<h3 style="margin-top:0;">Autonomous Reliability Engineering System</h3>
-
-<p>
-  <strong>AI‑Driven Detection • Self‑Healing Infrastructure • Production‑Grade DevOps</strong>
-</p>
-
 <div align="center">
 
-<img src="ARES-Logo.PNG" width="500"/>
+  <img src="ARES-Logo.PNG" alt="ARES Logo" width="400" />
+
+  <h1 style="margin: 10px 0 0 0; font-weight:700; letter-spacing:1px;">
+    ARES
+  </h1>
+
+  <h3 style="margin: 4px 0 10px 0; font-weight:400;">
+    Autonomous Reliability Engineering System
+  </h3>
+
+  <p style="margin: 0; font-size: 15px;">
+    <strong>
+      AI-Driven Detection • Self-Healing Infrastructure • Production-Grade DevOps
+    </strong>
+  </p>
 
 </div>
+
 
 ---
 
