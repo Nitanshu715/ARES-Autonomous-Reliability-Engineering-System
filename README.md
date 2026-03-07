@@ -1,5 +1,4 @@
 <div align="center">
-
   <h1 style="margin: 10px 0 0 0; font-weight:700; letter-spacing:1px;">
     ARES
   </h1>
