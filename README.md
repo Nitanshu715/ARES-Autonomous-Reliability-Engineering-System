@@ -29,6 +29,11 @@
   <img src="https://img.shields.io/badge/ML-Anomaly%20Detection-F4A261?style=for-the-badge"/>
   <img src="https://img.shields.io/badge/CI/CD-Fully%20Automated-6A4C93?style=for-the-badge"/>
 </p>
+<p align="center">
+  <a href="https://letslumiere.vercel.app/">
+    <img src="https://img.shields.io/badge/Live%20Demo-Vercel-black?style=for-the-badge&logo=vercel" />
+  </a>
+</p>
 
 ---
 
