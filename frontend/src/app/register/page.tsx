@@ -1,15 +1,19 @@
 "use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Cursor from "@/components/Cursor";
+import { API, saveToken, saveUser } from "@/lib/api";
 
 export default function RegisterPage() {
+  const router = useRouter();
   const [dark, setDark] = useState(true);
   const [step, setStep] = useState(1);
   const [done, setDone] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [focused, setFocused] = useState<string|null>(null);
   const [loaded, setLoaded] = useState(false);
   const [form, setForm] = useState({ firstName:"", lastName:"", email:"", password:"", confirm:"" });
@@ -20,21 +24,48 @@ export default function RegisterPage() {
   const fg=D?"#f0ece4":"#1a1410";
   const sub=D?"rgba(240,236,228,0.4)":"rgba(26,20,16,0.35)";
   const border=D?"rgba(255,255,255,0.07)":"rgba(0,0,0,0.07)";
-  const cardBg=D?"rgba(20,16,10,0.7)":"rgba(255,255,255,0.8)";
 
   const inp=(n:string):React.CSSProperties=>({width:"100%",padding:"12px 0",background:"transparent",border:"none",borderBottom:`1px solid ${focused===n?"#c8a96e":D?"rgba(240,236,228,0.18)":"rgba(26,20,16,0.15)"}`,color:fg,fontSize:14,outline:"none",transition:"border-color 0.3s",fontFamily:"inherit"});
   const lbl=(n:string):React.CSSProperties=>({fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase" as const,color:focused===n?"#c8a96e":sub,transition:"color 0.3s",display:"block",marginBottom:7});
   const set=(k:string,v:string)=>setForm(f=>({...f,[k]:v}));
 
-  const next=async()=>{
-    if(step===1){if(!form.firstName||!form.lastName)return;setStep(2);}
-    else{
-      if(!form.email||!form.password||form.password!==form.confirm)return;
-      setLoading(true);await new Promise(r=>setTimeout(r,1600));setLoading(false);setDone(true);
+  const next = async () => {
+    setError("");
+    if (step === 1) {
+      if (!form.firstName || !form.lastName) { setError("Please fill in all fields."); return; }
+      setStep(2);
+    } else {
+      if (!form.email || !form.password) { setError("Please fill in all fields."); return; }
+      if (form.password !== form.confirm) { setError("Passwords do not match."); return; }
+      if (form.password.length < 6) { setError("Password must be at least 6 characters."); return; }
+      setLoading(true);
+      try {
+        const res = await fetch(`${API.USER}/users/register`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: `${form.firstName} ${form.lastName}`,
+            email: form.email,
+            password: form.password,
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          setError(data.error || "Registration failed. Please try again.");
+        } else {
+          saveToken(data.token);
+          saveUser(data.user);
+          setDone(true);
+        }
+      } catch {
+        setError("Cannot connect to server. Please try again.");
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
-  if(done) return (
+  if (done) return (
     <div style={{minHeight:"100vh",background:bg,color:fg,fontFamily:"'Neue Haas Grotesk','Helvetica Neue',Helvetica,Arial,sans-serif",display:"flex",flexDirection:"column",transition:"background 0.6s,color 0.6s"}}>
       <style>{`*{cursor:none!important}`}</style>
       <Cursor/><Navbar dark={dark} toggleDark={()=>setDark(d=>!d)}/>
@@ -59,7 +90,6 @@ export default function RegisterPage() {
       <Cursor/><Navbar dark={dark} toggleDark={()=>setDark(d=>!d)}/>
 
       <div style={{flex:1,display:"grid",gridTemplateColumns:"1fr 1fr",minHeight:"100vh"}}>
-        {/* LEFT */}
         <div style={{position:"relative",overflow:"hidden"}}>
           <Image src="https://i.pinimg.com/1200x/b8/7a/3c/b87a3cc00adb45631dec8fee67a08759.jpg" alt="LUMIÈRE" fill style={{objectFit:"cover",objectPosition:"center"}} priority/>
           <div style={{position:"absolute",inset:0,background:"linear-gradient(to right,rgba(8,8,6,0.65) 0%,rgba(8,8,6,0.1) 100%)"}}/>
@@ -74,10 +104,8 @@ export default function RegisterPage() {
           </div>
         </div>
 
-        {/* RIGHT */}
         <div style={{display:"flex",alignItems:"center",justifyContent:"center",padding:"120px 64px 60px"}}>
           <div style={{width:"100%",maxWidth:400}}>
-            {/* Step indicator */}
             <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:36,opacity:loaded?1:0,animation:"fadeUp 0.7s 0.1s both"}}>
               {[1,2].map(s=>(
                 <div key={s} style={{display:"flex",alignItems:"center",gap:8}}>
@@ -90,6 +118,8 @@ export default function RegisterPage() {
 
             <h1 style={{fontFamily:"var(--font-cormorant),serif",fontSize:"clamp(32px,4vw,48px)",fontWeight:300,color:fg,lineHeight:1.05,marginBottom:40,opacity:loaded?1:0,animation:"fadeUp 0.7s 0.15s both"}}>Create your<br/>account</h1>
 
+            {error&&<div style={{padding:"11px 16px",background:"rgba(200,80,80,0.1)",border:"1px solid rgba(200,80,80,0.25)",fontSize:12,color:"#e06060",marginBottom:22}}>{error}</div>}
+
             <div style={{display:"flex",flexDirection:"column",gap:24,opacity:loaded?1:0,animation:"fadeUp 0.7s 0.25s both"}}>
               {step===1?(
                 <>
@@ -99,14 +129,14 @@ export default function RegisterPage() {
               ):(
                 <>
                   <div><label style={lbl("em")}>Email Address</label><input type="email" value={form.email} onChange={e=>set("email",e.target.value)} onFocus={()=>setFocused("em")} onBlur={()=>setFocused(null)} style={inp("em")} placeholder="you@email.com"/></div>
-                  <div><label style={lbl("pw")}>Password</label><input type="password" value={form.password} onChange={e=>set("password",e.target.value)} onFocus={()=>setFocused("pw")} onBlur={()=>setFocused(null)} style={inp("pw")} placeholder="Min 8 characters"/></div>
+                  <div><label style={lbl("pw")}>Password</label><input type="password" value={form.password} onChange={e=>set("password",e.target.value)} onFocus={()=>setFocused("pw")} onBlur={()=>setFocused(null)} style={inp("pw")} placeholder="Min 6 characters"/></div>
                   <div><label style={lbl("c")}>Confirm Password</label><input type="password" value={form.confirm} onChange={e=>set("confirm",e.target.value)} onFocus={()=>setFocused("c")} onBlur={()=>setFocused(null)} style={inp("c")} placeholder="Repeat password"/></div>
                 </>
               )}
             </div>
 
             <div style={{marginTop:32,display:"flex",gap:12,opacity:loaded?1:0,animation:"fadeUp 0.7s 0.35s both"}}>
-              {step===2&&<button onClick={()=>setStep(1)} style={{flex:1,padding:13,background:"none",border:`1px solid ${border}`,color:sub,fontSize:10,letterSpacing:"0.18em",textTransform:"uppercase",fontFamily:"inherit"}}>Back</button>}
+              {step===2&&<button onClick={()=>{setStep(1);setError("");}} style={{flex:1,padding:13,background:"none",border:`1px solid ${border}`,color:sub,fontSize:10,letterSpacing:"0.18em",textTransform:"uppercase",fontFamily:"inherit"}}>Back</button>}
               <button onClick={next} disabled={loading} style={{flex:2,padding:13,background:"#c8a96e",color:"#1a1410",border:"none",fontSize:10,letterSpacing:"0.22em",textTransform:"uppercase",fontWeight:700,fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"center",gap:10}}>
                 {loading&&<span style={{width:12,height:12,border:"1.5px solid rgba(26,20,16,0.3)",borderTopColor:"#1a1410",borderRadius:"50%",display:"inline-block",animation:"spin 0.8s linear infinite"}}/>}
                 {loading?"Creating…":step===1?"Continue →":"Create Account"}
