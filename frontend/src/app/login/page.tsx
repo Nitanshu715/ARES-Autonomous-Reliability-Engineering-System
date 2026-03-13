@@ -1,11 +1,14 @@
 "use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Cursor from "@/components/Cursor";
+import { API, saveToken, saveUser } from "@/lib/api";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [dark, setDark] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,11 +28,28 @@ export default function LoginPage() {
   const inputStyle=(n:string):React.CSSProperties=>({width:"100%",padding:"13px 0",background:"transparent",border:"none",borderBottom:`1px solid ${focused===n?"#c8a96e":D?"rgba(240,236,228,0.18)":"rgba(26,20,16,0.15)"}`,color:fg,fontSize:14,outline:"none",letterSpacing:"0.02em",transition:"border-color 0.3s",fontFamily:"inherit"});
   const labelStyle=(n:string):React.CSSProperties=>({fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase" as const,color:focused===n?"#c8a96e":sub,transition:"color 0.3s",display:"block",marginBottom:8});
 
-  const submit=async()=>{
-    if(!email||!password){setError("Please fill in all fields.");return;}
-    setError("");setLoading(true);
-    await new Promise(r=>setTimeout(r,1400));
-    setLoading(false);setError("Invalid credentials. Please try again.");
+  const submit = async () => {
+    if (!email || !password) { setError("Please fill in all fields."); return; }
+    setError(""); setLoading(true);
+    try {
+      const res = await fetch(`${API.USER}/users/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || "Invalid credentials. Please try again.");
+      } else {
+        saveToken(data.token);
+        saveUser(data.user);
+        router.push("/products");
+      }
+    } catch {
+      setError("Cannot connect to server. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -64,12 +84,12 @@ export default function LoginPage() {
             <div style={{display:"flex",flexDirection:"column",gap:26,opacity:loaded?1:0,animation:loaded?"fadeUp 0.7s 0.2s both":"none"}}>
               <div>
                 <label style={labelStyle("email")}>Email Address</label>
-                <input type="email" value={email} onChange={e=>setEmail(e.target.value)} onFocus={()=>setFocused("email")} onBlur={()=>setFocused(null)} style={inputStyle("email")} placeholder="you@email.com"/>
+                <input type="email" value={email} onChange={e=>setEmail(e.target.value)} onFocus={()=>setFocused("email")} onBlur={()=>setFocused(null)} style={inputStyle("email")} placeholder="you@email.com" onKeyDown={e=>e.key==="Enter"&&submit()}/>
               </div>
               <div>
                 <label style={labelStyle("pw")}>Password</label>
                 <div style={{position:"relative"}}>
-                  <input type={showPw?"text":"password"} value={password} onChange={e=>setPassword(e.target.value)} onFocus={()=>setFocused("pw")} onBlur={()=>setFocused(null)} style={{...inputStyle("pw"),paddingRight:44}} placeholder="••••••••"/>
+                  <input type={showPw?"text":"password"} value={password} onChange={e=>setPassword(e.target.value)} onFocus={()=>setFocused("pw")} onBlur={()=>setFocused(null)} style={{...inputStyle("pw"),paddingRight:44}} placeholder="••••••••" onKeyDown={e=>e.key==="Enter"&&submit()}/>
                   <button onClick={()=>setShowPw(s=>!s)} style={{position:"absolute",right:0,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:sub,fontSize:11,letterSpacing:"0.08em",textTransform:"uppercase",fontFamily:"inherit"}}>{showPw?"Hide":"Show"}</button>
                 </div>
                 <div style={{marginTop:10,textAlign:"right"}}><a href="#" style={{fontSize:11,color:"#c8a96e",textDecoration:"none"}}>Forgot password?</a></div>
@@ -92,5 +112,3 @@ export default function LoginPage() {
       </div>
       <Footer dark={dark}/>
     </div>
-  );
-}
