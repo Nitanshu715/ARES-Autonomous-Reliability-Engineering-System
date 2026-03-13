@@ -1,0 +1,19 @@
+export const PRODUCTS = [
+  { id:1, name:"Ironline Denim Jacket", price:480, tag:"New Season", category:"Outerwear", image:"https://i.pinimg.com/736x/84/16/cc/8416cc945dc76b6cd604d82cab41177f.jpg", hoverImage:"https://i.pinimg.com/736x/f7/9b/68/f79b684b56c55c5a806cd7ebb604f418.jpg", bgColor:"#1c1812", sizes:["XS","S","M","L","XL"], inStock:true },
+  { id:2, name:"Red Silk Midi Dress", price:620, tag:"Bestseller", category:"Dresses", image:"https://i.pinimg.com/1200x/72/b0/7e/72b07e19b5bd95bb1a2a102bc70d55a6.jpg", hoverImage:"https://i.pinimg.com/736x/0a/51/b3/0a51b35d49f77c012d7c62fba4c180e0.jpg", bgColor:"#f0ece4", sizes:["XS","S","M","L"], inStock:true },
+  { id:3, name:"Cashmere Wide Trousers", price:395, tag:"Limited", category:"Trousers", image:"https://i.pinimg.com/736x/2b/a6/78/2ba6780d1e643a6892de3eb5e30a976e.jpg", hoverImage:"https://i.pinimg.com/736x/97/18/4f/97184f364dfdcdb95f56ade60207e3c9.jpg", bgColor:"#e8ddd0", sizes:["XS","S","M","L","XL"], inStock:true },
+  { id:4, name:"Obsidian Longline Coat", price:1250, tag:"Archive", category:"Outerwear", image:"https://i.pinimg.com/1200x/0e/d9/6d/0ed96dec58c404d38acd55c3956cf1e1.jpg", hoverImage:"https://i.pinimg.com/1200x/ac/a3/ba/aca3ba6ef74c098375f129985f08bc4c.jpg", bgColor:"#2d1f14", sizes:["S","M","L"], inStock:true },
+  { id:5, name:"Satin Wrap Blouse", price:290, tag:"New Season", category:"Tops", image:"https://i.pinimg.com/1200x/55/8b/5d/558b5d91f310a13a1fac713ed36f86dc.jpg", hoverImage:"https://i.pinimg.com/1200x/7b/fa/8d/7bfa8d04bae5716bed7914dfe32c1fcc.jpg", bgColor:"#c4a882", sizes:["XS","S","M","L","XL"], inStock:true },
+  { id:6, name:"Cable Knit Sweater", price:195, tag:"Essentials", category:"Tops", image:"https://i.pinimg.com/736x/f3/8d/ad/f38dad4af12832a1a9503f4b09f78123.jpg", hoverImage:"https://i.pinimg.com/avif/1200x/43/a4/cb/43a4cb3171778457abc24369183257c8.avf", bgColor:"#8fa8a0", sizes:["XS","S","M","L","XL","XXL"], inStock:true },
+  { id:7, name:"Vintage Wash Denim Skirt", price:345, tag:"Bestseller", category:"Trousers", image:"https://i.pinimg.com/avif/1200x/7d/28/2f/7d282f2f752f8b97701676e83ce7c1ba.avf", hoverImage:"https://i.pinimg.com/736x/a6/3b/86/a63b86ac16b7d68982afaae0f906ab3b.jpg", bgColor:"#3d3d3d", sizes:["XS","S","M","L"], inStock:false },
+  { id:8, name:"Navy Evening Gown", price:890, tag:"Limited", category:"Dresses", image:"https://i.pinimg.com/736x/56/0a/60/560a60a035e8b52cd3b398060ea80f0f.jpg", hoverImage:"https://i.pinimg.com/736x/a7/ed/75/a7ed756b44fe840a638bd34261326994.jpg", bgColor:"#1a0a2e", sizes:["XS","S","M","L"], inStock:true },
+];
+
+export const ORDERS = [
+  { id:"LUM-2025-1023", date:"03 March 2025", status:"Shipped" as const, tracking:"DHL-FR-7291006610", estimatedDelivery:"06 March 2025", total:1250, address:"12 Rue du Faubourg Saint-Honoré, 75008 Paris",
+    items:[{ name:"Obsidian Longline Coat", price:1250, size:"M", qty:1, image:"https://i.pinimg.com/1200x/0e/d9/6d/0ed96dec58c404d38acd55c3956cf1e1.jpg", bgColor:"#2d1f14" }] },
+  { id:"LUM-2025-0841", date:"12 February 2025", status:"Delivered" as const, tracking:"DHL-FR-7291004821", estimatedDelivery:"15 February 2025", total:875, address:"12 Rue du Faubourg Saint-Honoré, 75008 Paris",
+    items:[{ name:"Ironline Denim Jacket", price:480, size:"M", qty:1, image:"https://i.pinimg.com/736x/84/16/cc/8416cc945dc76b6cd604d82cab41177f.jpg", bgColor:"#1c1812" },{ name:"Cashmere Wide Trousers", price:395, size:"S", qty:1, image:"https://i.pinimg.com/736x/2b/a6/78/2ba6780d1e643a6892de3eb5e30a976e.jpg", bgColor:"#e8ddd0" }] },
+  { id:"LUM-2025-0762", date:"28 January 2025", status:"Delivered" as const, tracking:"DHL-FR-7291003344", estimatedDelivery:"31 January 2025", total:620, address:"12 Rue du Faubourg Saint-Honoré, 75008 Paris",
+    items:[{ name:"Red Silk Midi Dress", price:620, size:"XS", qty:1, image:"https://i.pinimg.com/1200x/72/b0/7e/72b07e19b5bd95bb1a2a102bc70d55a6.jpg", bgColor:"#f0ece4" }] },
+];
