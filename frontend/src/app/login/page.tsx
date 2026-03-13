@@ -112,3 +112,5 @@ export default function LoginPage() {
       </div>
       <Footer dark={dark}/>
     </div>
+);
+}
