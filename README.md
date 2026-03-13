@@ -16,17 +16,6 @@
 
 ---
 
-<p align="center" style="margin-top: 0;">
-  <img src="https://img.shields.io/badge/Platform-Cloud--Native-2F80ED?style=for-the-badge"/>
-  <img src="https://img.shields.io/badge/Architecture-Microservices-27AE60?style=for-the-badge"/>
-  <img src="https://img.shields.io/badge/Reliability-Autonomous-E63946?style=for-the-badge"/>
-  <img src="https://img.shields.io/badge/ML-Anomaly%20Detection-F4A261?style=for-the-badge"/>
-  <img src="https://img.shields.io/badge/CI/CD-Fully%20Automated-6A4C93?style=for-the-badge"/>
-</p>
-
-
----
-
 <p align="center">
   <img src="https://img.shields.io/badge/Platform-Cloud--Native-2F80ED?style=for-the-badge"/>
   <img src="https://img.shields.io/badge/Architecture-Microservices-27AE60?style=for-the-badge"/>
