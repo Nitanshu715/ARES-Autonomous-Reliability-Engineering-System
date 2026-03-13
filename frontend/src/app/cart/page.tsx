@@ -33,7 +33,7 @@ export default function CartPage() {
       const token = getToken();
       if (!token) { setLoading(false); return; }
       try {
-        const res = await fetch(`${API.CART}/cart`, {
+        const res = await fetch(`${API.cart}/cart`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -56,7 +56,7 @@ export default function CartPage() {
     const token = getToken();
     if (!token) return;
     try {
-      const res = await fetch(`${API.CART}/cart/remove`, {
+      const res = await fetch(`${API.cart}/cart/remove`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ product_id }),
@@ -75,7 +75,7 @@ export default function CartPage() {
     if (!token) { window.location.href = "/login"; return; }
     if (items.length === 0) return;
     try {
-      const res = await fetch(`${API.ORDER}/order`, {
+      const res = await fetch(`${API.order}/order`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({

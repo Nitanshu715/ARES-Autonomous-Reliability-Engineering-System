@@ -37,7 +37,7 @@ export default function OrdersPage() {
       const token = getToken();
       if (!token) { setLoading(false); return; }
       try {
-        const res = await fetch(`${API.ORDER}/orders`, {
+        const res = await fetch(`${API.order}/orders`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();

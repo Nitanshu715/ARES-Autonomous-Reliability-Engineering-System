@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
 import "./globals.css";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "ARES — Autonomous Reliability Engineering System",
-  description: "Cloud microservices reliability platform",
+  title: "ARES",
+  description: "Autonomous Reliability Engineering System",
 };
 
 export default function RootLayout({

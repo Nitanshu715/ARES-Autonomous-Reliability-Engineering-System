@@ -32,7 +32,7 @@ export default function LoginPage() {
     if (!email || !password) { setError("Please fill in all fields."); return; }
     setError(""); setLoading(true);
     try {
-      const res = await fetch(`${API.USER}/users/login`, {
+      const res = await fetch(`${API.user}/users/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

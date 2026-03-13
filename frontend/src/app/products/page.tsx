@@ -36,7 +36,7 @@ export default function ProductsPage() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch(`${API.PRODUCT}/products`);
+        const res = await fetch(`${API.product}/products`);
         const data = await res.json();
         setProducts(data.products || []);
       } catch {
@@ -71,7 +71,7 @@ export default function ProductsPage() {
     }
     setAddedId(product.id);
     try {
-      const res = await fetch(`${API.CART}/cart/add`, {
+      const res = await fetch(`${API.cart}/cart/add`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({
