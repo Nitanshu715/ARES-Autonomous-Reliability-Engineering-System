@@ -18,6 +18,18 @@ export const setToken = (token: string) => {
   }
 };
 
+export const saveToken = (token: string) => {
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('token', token);
+  }
+};
+
+export const saveUser = (user: any) => {
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('user', JSON.stringify(user));
+  }
+};
+
 export const removeToken = () => {
   if (typeof window !== 'undefined') {
     localStorage.removeItem('token');

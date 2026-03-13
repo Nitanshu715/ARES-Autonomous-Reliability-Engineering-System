@@ -47,7 +47,6 @@ build
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-=======
 node_modules/
 .env
 
