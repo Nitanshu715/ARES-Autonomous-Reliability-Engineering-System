@@ -1,23 +1,28 @@
 <div align="center">
-  <h1 style="margin: 10px 0 0 0; font-weight:700; letter-spacing:1px;">
+  <h1 style="margin: 0; padding-top: 0; font-weight:700; letter-spacing:1px; line-height: 1;">
     ARES
   </h1>
-
-  <h3 style="margin: 4px 0 10px 0; font-weight:400;">
+  <h3 style="margin: 5px 0; font-weight:400;">
     Autonomous Reliability Engineering System
   </h3>
-
   <p style="margin: 0; font-size: 15px;">
     <strong>
       AI-Driven Detection • Self-Healing Infrastructure • Production-Grade DevOps
     </strong>
   </p>
-  
+  <br />
   <img src="ARES-Logo.PNG" alt="ARES Logo" width="400" />
-
-
-
 </div>
+
+---
+
+<p align="center" style="margin-top: 0;">
+  <img src="https://img.shields.io/badge/Platform-Cloud--Native-2F80ED?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/Architecture-Microservices-27AE60?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/Reliability-Autonomous-E63946?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/ML-Anomaly%20Detection-F4A261?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/CI/CD-Fully%20Automated-6A4C93?style=for-the-badge"/>
+</p>
 
 
 ---
