@@ -4,9 +4,19 @@ import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Cursor from "@/components/Cursor";
-import { PRODUCTS } from "@/lib/data";
+import { API, getToken, getUser } from "@/lib/api";
 
 const CATS = ["All","Outerwear","Dresses","Trousers","Tops"];
+
+type Product = {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  stock: number;
+  category: string;
+  image_url: string;
+};
 
 export default function ProductsPage() {
   const [dark, setDark] = useState(true);
@@ -16,11 +26,28 @@ export default function ProductsPage() {
   const [hovered, setHovered] = useState<number|null>(null);
   const [loaded, setLoaded] = useState(false);
   const [visible, setVisible] = useState<Set<number>>(new Set());
+  const [products, setProducts] = useState<Product[]>([]);
+  const [addedId, setAddedId] = useState<number|null>(null);
+  const [toast, setToast] = useState("");
   const refs = useRef<(HTMLDivElement|null)[]>([]);
   useEffect(()=>{setTimeout(()=>setLoaded(true),80)},[]);
 
-  const filtered = PRODUCTS
-    .filter(p => cat==="All"||p.category===cat)
+  // Fetch products from real backend
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await fetch(`${API.PRODUCT}/products`);
+        const data = await res.json();
+        setProducts(data.products || []);
+      } catch {
+        console.error("Failed to fetch products");
+      }
+    };
+    fetchProducts();
+  }, []);
+
+  const filtered = products
+    .filter(p => cat==="All" || p.category===cat)
     .filter(p => p.name.toLowerCase().includes(search.toLowerCase()))
     .sort((a,b) => sort==="price-asc"?a.price-b.price:sort==="price-desc"?b.price-a.price:a.id-b.id);
 
@@ -29,6 +56,43 @@ export default function ProductsPage() {
     refs.current.forEach(r=>{if(r)obs.observe(r)});
     return()=>obs.disconnect();
   },[filtered.length]);
+
+  const showToast = (msg: string) => {
+    setToast(msg);
+    setTimeout(() => setToast(""), 2500);
+  };
+
+  const addToCart = async (product: Product) => {
+    const token = getToken();
+    if (!token) {
+      showToast("Please login to add items to cart");
+      setTimeout(() => window.location.href = "/login", 1500);
+      return;
+    }
+    setAddedId(product.id);
+    try {
+      const res = await fetch(`${API.CART}/cart/add`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({
+          product_id: product.id,
+          product_name: product.name,
+          price: product.price,
+          quantity: 1,
+          image_url: product.image_url,
+        }),
+      });
+      if (res.ok) {
+        showToast(`${product.name} added to bag`);
+      } else {
+        showToast("Failed to add to cart");
+      }
+    } catch {
+      showToast("Cannot connect to server");
+    } finally {
+      setAddedId(null);
+    }
+  };
 
   const D=dark;
   const bg=D?"#080806":"#f8f5f0";
@@ -41,6 +105,9 @@ export default function ProductsPage() {
     <div style={{minHeight:"100vh",background:bg,color:fg,fontFamily:"'Neue Haas Grotesk','Helvetica Neue',Helvetica,Arial,sans-serif",transition:"background 0.6s,color 0.6s"}}>
       <style>{`*{cursor:none!important}@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}`}</style>
       <Cursor/><Navbar dark={dark} toggleDark={()=>setDark(d=>!d)}/>
+
+      {/* TOAST */}
+      {toast&&<div style={{position:"fixed",bottom:32,left:"50%",transform:"translateX(-50%)",background:"#c8a96e",color:"#1a1410",padding:"12px 24px",fontSize:12,letterSpacing:"0.1em",zIndex:9999,borderRadius:2,transition:"all 0.3s"}}>{toast}</div>}
 
       {/* HERO BANNER */}
       <div style={{paddingTop:100,paddingBottom:60,paddingLeft:48,paddingRight:48,borderBottom:`1px solid ${border}`,opacity:loaded?1:0,animation:loaded?"fadeUp 0.8s both":"none"}}>
@@ -72,18 +139,15 @@ export default function ProductsPage() {
           <div key={p.id} ref={el=>{refs.current[i]=el}} data-id={p.id} onMouseEnter={()=>setHovered(p.id)} onMouseLeave={()=>setHovered(null)}
             style={{opacity:visible.has(p.id)?1:0,transform:visible.has(p.id)?"none":"translateY(24px)",transition:`opacity 0.7s ${(i%4)*0.08}s,transform 0.7s ${(i%4)*0.08}s`}}>
             <div style={{background:card,border:`1px solid ${border}`,borderRadius:2,overflow:"hidden",boxShadow:hovered===p.id?"0 32px 64px rgba(0,0,0,0.22)":"0 4px 20px rgba(0,0,0,0.07)",transform:hovered===p.id?"translateY(-6px)":"none",transition:"all 0.5s cubic-bezier(0.16,1,0.3,1)"}}>
-              <div style={{height:360,position:"relative",overflow:"hidden",background:p.bgColor}}>
-                <div style={{position:"absolute",inset:0,opacity:hovered===p.id?0:1,transition:"opacity 0.6s"}}>
-                  <Image src={p.image} alt={p.name} fill quality={85} style={{objectFit:"cover",objectPosition:"center top",transform:hovered===p.id?"scale(1.05)":"scale(1)",transition:"transform 0.8s cubic-bezier(0.16,1,0.3,1)"}}/>
-                </div>
-                <div style={{position:"absolute",inset:0,opacity:hovered===p.id?1:0,transition:"opacity 0.6s"}}>
-                  <Image src={p.hoverImage} alt={p.name} fill quality={85} style={{objectFit:"cover",objectPosition:"center top"}}/>
-                </div>
-                <div style={{position:"absolute",top:12,left:12,background:"rgba(8,8,6,0.72)",backdropFilter:"blur(8px)",border:"1px solid rgba(200,169,110,0.3)",padding:"4px 10px",fontSize:9,letterSpacing:"0.18em",textTransform:"uppercase",color:"#c8a96e"}}>{p.tag}</div>
-                {!p.inStock&&<div style={{position:"absolute",top:12,right:12,background:"rgba(8,8,6,0.72)",padding:"4px 10px",fontSize:9,letterSpacing:"0.14em",color:"rgba(240,236,228,0.5)"}}>Sold Out</div>}
-                {p.inStock&&(
+              <div style={{height:360,position:"relative",overflow:"hidden",background:"#1a1410"}}>
+                <Image src={p.image_url} alt={p.name} fill quality={85} style={{objectFit:"cover",objectPosition:"center top",transform:hovered===p.id?"scale(1.05)":"scale(1)",transition:"transform 0.8s cubic-bezier(0.16,1,0.3,1)"}}/>
+                <div style={{position:"absolute",top:12,left:12,background:"rgba(8,8,6,0.72)",backdropFilter:"blur(8px)",border:"1px solid rgba(200,169,110,0.3)",padding:"4px 10px",fontSize:9,letterSpacing:"0.18em",textTransform:"uppercase",color:"#c8a96e"}}>{p.category}</div>
+                {p.stock === 0 && <div style={{position:"absolute",top:12,right:12,background:"rgba(8,8,6,0.72)",padding:"4px 10px",fontSize:9,letterSpacing:"0.14em",color:"rgba(240,236,228,0.5)"}}>Sold Out</div>}
+                {p.stock > 0 && (
                   <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px 14px 14px",background:"linear-gradient(to top,rgba(8,8,6,0.9) 0%,transparent 100%)",opacity:hovered===p.id?1:0,transform:hovered===p.id?"translateY(0)":"translateY(8px)",transition:"all 0.36s"}}>
-                    <a href="/cart" style={{display:"block",padding:11,background:"#c8a96e",color:"#1a1410",fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase",fontWeight:700,textDecoration:"none",textAlign:"center"}} onMouseEnter={e=>{(e.currentTarget as HTMLElement).style.background="#d4b980"}} onMouseLeave={e=>{(e.currentTarget as HTMLElement).style.background="#c8a96e"}}>Quick Add</a>
+                    <button onClick={()=>addToCart(p)} disabled={addedId===p.id} style={{display:"block",width:"100%",padding:11,background:addedId===p.id?"#8b7355":"#c8a96e",color:"#1a1410",fontSize:10,letterSpacing:"0.2em",textTransform:"uppercase",fontWeight:700,border:"none",fontFamily:"inherit",cursor:"pointer"}}>
+                      {addedId===p.id?"Adding…":"Quick Add"}
+                    </button>
                   </div>
                 )}
               </div>
@@ -93,9 +157,9 @@ export default function ProductsPage() {
                   <p style={{fontSize:11,letterSpacing:"0.08em",color:sub,marginBottom:2}}>{p.category}</p>
                   <p style={{fontFamily:"var(--font-cormorant),serif",fontSize:15,fontWeight:300,color:sub}}>€{p.price.toLocaleString()}</p>
                 </div>
-                {p.inStock
-                  ?<a href="/cart" style={{flexShrink:0,background:"none",border:`1px solid ${border}`,padding:"6px 13px",fontSize:9,letterSpacing:"0.14em",textTransform:"uppercase",color:sub,textDecoration:"none",marginTop:3,transition:"all 0.3s"}} onMouseEnter={e=>{const el=e.currentTarget;el.style.background="#c8a96e";el.style.borderColor="#c8a96e";el.style.color="#1a1410"}} onMouseLeave={e=>{const el=e.currentTarget;el.style.background="none";el.style.borderColor=border;el.style.color=sub}}>Add</a>
-                  :<span style={{fontSize:9,letterSpacing:"0.12em",color:sub,marginTop:6,display:"block"}}>Notify Me</span>
+                {p.stock > 0
+                  ? <button onClick={()=>addToCart(p)} style={{flexShrink:0,background:"none",border:`1px solid ${border}`,padding:"6px 13px",fontSize:9,letterSpacing:"0.14em",textTransform:"uppercase",color:sub,marginTop:3,transition:"all 0.3s",fontFamily:"inherit",cursor:"pointer"}} onMouseEnter={e=>{const el=e.currentTarget;el.style.background="#c8a96e";el.style.borderColor="#c8a96e";el.style.color="#1a1410"}} onMouseLeave={e=>{const el=e.currentTarget;el.style.background="none";el.style.borderColor=border;el.style.color=sub}}>Add</button>
+                  : <span style={{fontSize:9,letterSpacing:"0.12em",color:sub,marginTop:6,display:"block"}}>Notify Me</span>
                 }
               </div>
             </div>
