@@ -8,6 +8,28 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// ── ARES Monitoring: metrics + health ─────────────────────
+const client = require('prom-client');
+const register = new client.Registry();
+client.collectDefaultMetrics({ register });
+const httpDuration = new client.Histogram({
+  name: 'http_request_duration_seconds',
+  help: 'HTTP request duration',
+  labelNames: ['method', 'route', 'status'],
+  registers: [register],
+});
+app.use((req, res, next) => {
+  if (req.path === '/metrics' || req.path === '/health') return next();
+  const end = httpDuration.startTimer();
+  res.on('finish', () => end({ method: req.method, route: req.path, status: res.statusCode }));
+  next();
+});
+app.get('/metrics', async (req, res) => {
+  res.set('Content-Type', register.contentType);
+  res.end(await register.metrics());
+});
+// ──────────────────────────────────────────────────────────
+
 const PORT = process.env.PORT || 3002;
 
 const initDB = async () => {
