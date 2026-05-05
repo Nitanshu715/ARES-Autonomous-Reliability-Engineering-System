@@ -409,8 +409,8 @@ The Helios ML Engine anomaly detection subsystem has been independently accepted
 
 ## Team
 
-| Name | Role |
-|------|------|
+| Members |
+|------|
 | **Nitanshu Tak** |
 | **Aarohi Jaiswal** |
 | **Sristee Bhindwar** |
